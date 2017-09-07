@@ -17,6 +17,17 @@ function User(id){
     this.id = id;
     this.timeQueue = [];
     this.resourceQueue = [];
+
+    //Returns true if the num is in the resourceQueue(duplicate value).
+    this.uses = function(num){
+        for(i = 0; i < this.resourceQueue.length; i++){
+            if(num == this.resourceQueue[i]){
+                console.log(num + " vs. " + this.resourceQueue[i]);
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 //Array initialization for resources and users
@@ -38,10 +49,15 @@ for(j = 0; j < userNum; j++){
 
 //Assigns resource for each user
 for(k = 0; k < userNum; k++){
-    var resourcesToUse = generateRandom(30);
+    var resourcesToUse = generateRandom(resourceNum);
 
     for(l = 0; l < resourcesToUse; l++){
-        var randomResource = generateRandom(resourceNum) - 1;
+
+        //checks if the user already queued the current resource and generates a new one if true
+        do{
+            var randomResource = generateRandom(resourceNum) - 1;
+        } while(users[k].uses(randomResource))
+
         var time = generateRandom(30);
 
         users[k].timeQueue.push(time);
@@ -50,6 +66,8 @@ for(k = 0; k < userNum; k++){
             resources[randomResource].userQueue.push(users[k]); //adds user to the waitlist of the resource
         }
     }
+
+    console.log(users[k].resourceQueue);
 
 }
 
