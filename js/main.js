@@ -81,17 +81,17 @@ function renderUI(){
     for(p = 0; p < resourceNum; p++){
 
         if(resources[p].isActive == true){
-            context.fillStyle = "#0000FF";
+            context.fillStyle = "#00AAFF";
         } else {
-            context.fillStyle = "#FF0000";
+            context.fillStyle = "#FF2200";
         }
         context.fillText("Resource " + resources[p].id, 10, 80+(p*20));
 
         for(q = 0; q < resources[p].userQueue.length; q++){
             if(q == 0){
-                context.fillStyle = "#00AA00";
+                context.fillStyle = "#00FF00";
             } else {
-                context.fillStyle = "#AAAA00";
+                context.fillStyle = "#FFFF00";
             }
 
             context.fillText("User " + resources[p].userQueue[q].id, 10 * 15 * (q+1), 80+(p*20));
