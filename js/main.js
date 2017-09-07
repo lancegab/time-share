@@ -9,7 +9,6 @@ function generateRandom(max){
 function Resource(id){
     //Resource class
     this.id = id;
-    this.active = false;
     this.userQueue = [];
 }
 
@@ -78,7 +77,7 @@ function renderUI(){
     context.font = "15px Arial";
     for(p = 0; p < resourceNum; p++){
 
-        if(resources[p].isActive == true)
+        if(resources[p].userQueue.length > 0)
             context.fillStyle = "#00AAFF";
         else
             context.fillStyle = "#FF2200";
@@ -102,7 +101,6 @@ function main(){
     for(n = 0; n < resourceNum; n++){
         //if there are users using the current resource
         if(resources[n].userQueue.length > 0){
-            resources[n].isActive = true;
             //if user is done using the current resouce
             if(resources[n].userQueue[0].timeQueue[0] == 0){
                 resources[n].userQueue[0].resourceQueue.shift(); //pops the current resource that the user is using
@@ -117,8 +115,6 @@ function main(){
             } else {
                 resources[n].userQueue[0].timeQueue[0]--; //continues the countdown for the use of resource
             }
-        } else {
-            resources[n].isActive = false;
         }
     }
     renderUI();
