@@ -21,9 +21,8 @@ function User(id){
     //Returns true if the num is in the resourceQueue(duplicate value).
     this.uses = function(num){
         for(i = 0; i < this.resourceQueue.length; i++){
-            if(num == this.resourceQueue[i]){
+            if(num == this.resourceQueue[i])
                 return true;
-            }
         }
         return false;
     }
@@ -62,9 +61,8 @@ for(k = 0; k < userNum; k++){
         users[k].timeQueue.push(time);
         users[k].resourceQueue.push(randomResource);
 
-        if(l == 0){
+        if(l == 0)
             resources[randomResource].userQueue.push(users[k]); //adds user to the waitlist of the resource
-        }
     }
 }
 
@@ -80,19 +78,18 @@ function renderUI(){
     context.font = "15px Arial";
     for(p = 0; p < resourceNum; p++){
 
-        if(resources[p].isActive == true){
+        if(resources[p].isActive == true)
             context.fillStyle = "#00AAFF";
-        } else {
+        else
             context.fillStyle = "#FF2200";
-        }
+
         context.fillText("Resource " + resources[p].id, 10, 80+(p*20));
 
         for(q = 0; q < resources[p].userQueue.length; q++){
-            if(q == 0){
+            if(q == 0)
                 context.fillStyle = "#00FF00";
-            } else {
+            else
                 context.fillStyle = "#FFFF00";
-            }
 
             context.fillText("User " + resources[p].userQueue[q].id, 10 * 15 * (q+1), 80+(p*20));
             context.fillText("(" + resources[p].userQueue[q].timeQueue[0] + ")", 10 * 15 * (q+1) + 60, 80+(p*20));
