@@ -78,9 +78,9 @@ function renderUI(){
     for(p = 0; p < resourceNum; p++){
 
         if(resources[p].userQueue.length > 0)
-            context.fillStyle = "#00AAFF";
-        else
             context.fillStyle = "#FF2200";
+        else
+            context.fillStyle = "#00AAFF";
 
         context.fillText("Resource " + resources[p].id, 10, 80+(p*20));
 
