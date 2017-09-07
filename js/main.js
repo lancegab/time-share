@@ -15,7 +15,8 @@ function Resource(id){
 function User(id){
     //User class
     this.id = id;
-    this.timeLeft = 0;
+    this.timeQueue = [];
+    this.resourceQueue = [];
 }
 
 //Array initialization for resources and users
@@ -37,12 +38,19 @@ for(j = 0; j < userNum; j++){
 
 //Assigns resource for each user
 for(k = 0; k < userNum; k++){
-    var randomResource = generateRandom(resourceNum) - 1;
-    var time = generateRandom(30);
+    var resourcesToUse = generateRandom(30);
 
-    users[k].timeLeft = time; //sets time for user to use resource
+    for(l = 0; l < resourcesToUse; l++){
+        var randomResource = generateRandom(resourceNum) - 1;
+        var time = generateRandom(30);
 
-    resources[randomResource].userQueue.push(users[k]); //adds user to the waitlist of the resource
+        users[k].timeQueue.push(time);
+        users[k].resourceQueue.push(randomResource);
+        if(l == 0){
+            resources[randomResource].userQueue.push(users[k]); //adds user to the waitlist of the resource
+        }
+    }
+
 }
 
 function renderUI(){
@@ -63,7 +71,7 @@ function renderUI(){
             } else {
                 context.fillStyle = "#AAAA00";
             }
-            context.fillText("User " + resources[p].userQueue[q].id + " (" + resources[p].userQueue[q].timeLeft + ")", 10 * 15 * (q+1), 80+(p*20));
+            context.fillText("User " + resources[p].userQueue[q].id + " (" + resources[p].userQueue[q].timeQueue[0] + ")", 10 * 15 * (q+1), 80+(p*20));
         }
         context.fillStyle = "#bbb";
     }
@@ -72,11 +80,21 @@ function renderUI(){
 function main(){
     //main loop, keeps track of users per resources
     for(n = 0; n < resourceNum; n++){
+        //if there are users using the current resource:
         if(resources[n].userQueue.length > 0){
-            if(resources[n].userQueue[0].timeLeft == 0){
+            //if user is done using the current resouce
+            if(resources[n].userQueue[0].timeQueue[0] == 0){
+                resources[n].userQueue[0].resourceQueue.shift(); //pops the current resource that the user is using
+                resources[n].userQueue[0].timeQueue.shift(); //pops the current time that the user is using
+
+                //if user still has another resource to use
+                if(resources[n].userQueue[0].resourceQueue.length > 0){
+                        resources[resources[n].userQueue[0].resourceQueue[0]].userQueue.push(resources[n].userQueue[0]); //user lines up to another resource
+                }
+
                 resources[n].userQueue.shift(); //switches the use of resource to a new user
             } else {
-                resources[n].userQueue[0].timeLeft--; //continues the countdown for the use of resource
+                resources[n].userQueue[0].timeQueue[0]--; //continues the countdown for the use of resource
             }
         }
     }
