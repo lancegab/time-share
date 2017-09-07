@@ -9,6 +9,7 @@ function generateRandom(max){
 function Resource(id){
     //Resource class
     this.id = id;
+    this.active = false;
     this.userQueue = [];
 }
 
@@ -17,7 +18,6 @@ function User(id){
     this.id = id;
     this.timeQueue = [];
     this.resourceQueue = [];
-
     //Returns true if the num is in the resourceQueue(duplicate value).
     this.uses = function(num){
         for(i = 0; i < this.resourceQueue.length; i++){
@@ -72,31 +72,40 @@ function renderUI(){
     //function to render user interface to canvas
     context.fillStyle = "#000";
     context.fillRect(0,0,1500,760);
-    context.fillStyle = "#bbb";
+    context.fillStyle = "#FFF";
     context.font = "30px Arial";
     context.fillText("Resources - " + resourceNum, 10, 40);
     context.fillText("Users - " + userNum, 250, 40);
 
     context.font = "15px Arial";
     for(p = 0; p < resourceNum; p++){
+
+        if(resources[p].isActive == true){
+            context.fillStyle = "#0000FF";
+        } else {
+            context.fillStyle = "#FF0000";
+        }
         context.fillText("Resource " + resources[p].id, 10, 80+(p*20));
+
         for(q = 0; q < resources[p].userQueue.length; q++){
             if(q == 0){
                 context.fillStyle = "#00AA00";
             } else {
                 context.fillStyle = "#AAAA00";
             }
-            context.fillText("User " + resources[p].userQueue[q].id + " (" + resources[p].userQueue[q].timeQueue[0] + ")", 10 * 15 * (q+1), 80+(p*20));
+
+            context.fillText("User " + resources[p].userQueue[q].id, 10 * 15 * (q+1), 80+(p*20));
+            context.fillText("(" + resources[p].userQueue[q].timeQueue[0] + ")", 10 * 15 * (q+1) + 60, 80+(p*20));
         }
-        context.fillStyle = "#bbb";
     }
 }
 
 function main(){
     //main loop, keeps track of users per resources
     for(n = 0; n < resourceNum; n++){
-        //if there are users using the current resource:
+        //if there are users using the current resource
         if(resources[n].userQueue.length > 0){
+            resources[n].isActive = true;
             //if user is done using the current resouce
             if(resources[n].userQueue[0].timeQueue[0] == 0){
                 resources[n].userQueue[0].resourceQueue.shift(); //pops the current resource that the user is using
@@ -111,6 +120,8 @@ function main(){
             } else {
                 resources[n].userQueue[0].timeQueue[0]--; //continues the countdown for the use of resource
             }
+        } else {
+            resources[n].isActive = false;
         }
     }
     renderUI();
