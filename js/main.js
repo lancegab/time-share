@@ -22,7 +22,6 @@ function User(id){
     this.uses = function(num){
         for(i = 0; i < this.resourceQueue.length; i++){
             if(num == this.resourceQueue[i]){
-                console.log(num + " vs. " + this.resourceQueue[i]);
                 return true;
             }
         }
@@ -62,13 +61,11 @@ for(k = 0; k < userNum; k++){
 
         users[k].timeQueue.push(time);
         users[k].resourceQueue.push(randomResource);
+
         if(l == 0){
             resources[randomResource].userQueue.push(users[k]); //adds user to the waitlist of the resource
         }
     }
-
-    console.log(users[k].resourceQueue);
-
 }
 
 function renderUI(){
